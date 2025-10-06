@@ -1,0 +1,15 @@
+{
+	"name" : "Better Canvas Organization",
+	"description" : "Provides better tools to self-organize and collaborate on Canvas.",
+	"version" : "1.0",
+	"manifest_version" : 3,
+	"action": {
+		"default_popup" : "test.html",
+		"default_icon" : "test.png"
+	},
+	"content_scripts" : [ {
+		"matches" : ["https://oglethorpe.instructure.com/calendar*"],
+		"js" : ["background.js"]
+	}],
+	"permissions" : ["activeTab"]
+}
