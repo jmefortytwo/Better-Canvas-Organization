@@ -9,7 +9,7 @@
 	},
 	"content_scripts" : [ {
 		"matches" : ["https://oglethorpe.instructure.com/calendar*"],
-		"js" : ["background.js"]
+		"js" : ["script.js"]
 	}],
 	"permissions" : ["activeTab"]
 }
