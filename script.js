@@ -2,26 +2,51 @@ function removeOriginals() {
 	const maindiv = document.getElementById("main");
 	const divs = maindiv.querySelectorAll('div');
 
-	divs.forEach(div  => {
+	for(div of divs) {
 		div.remove();
-	});
+	}
 }
 
-async function fetchAssignments() {
-	const result = await fetch("https://oglethorpe.instructure.com/api/v1/courses/6338/assignments");
+async function fetchCourses() {
+	const result = await fetch("https://oglethorpe.instructure.com/api/v1/courses");
 	const data = await result.json();
-	
-	console.log("fetch successful");
 	return data;
 }
 
-async function displayAssignments() {
-	const assignments = await fetchAssignments();
+async function fetchAssignments(id) {
+	const result = await fetch("https://oglethorpe.instructure.com/api/v1/courses/"+id+"/assignments");
+	const data = await result.json();
+	return data;
+}
+
+async function processCourses(courses) {
+	let courseData = [];
+
+	for(course of courses) {
+		if(Date.now() < new Date(course.end_at).getTime()) {
+			assignments = await fetchAssignments(course.id);
+			courseData.push({id : course.id, assignments : assignments});
+		}
+	}
+
+	return courseData;
+}
+
+async function displayAssignments(assignments) {
 	const maindiv = document.getElementById("main");
 
-	assignments.forEach(assignment => {
+	for(assignment of assignments) {
 		maindiv.innerHTML += '\n<div>'+assignment.name+'</div>';
-	});}
+	}
+}
 
-removeOriginals();
-displayAssignments();
+async function main() {
+	removeOriginals();
+
+	const courses = await fetchCourses();
+	const courseData = await processCourses(courses);
+	for(course of courseData) {
+		displayAssignments(course.assignments);
+	}
+}
+main();
