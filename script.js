@@ -1,7 +1,8 @@
-function removeOriginals() {
+function setup() {
 	const maindiv = document.getElementById("main");
 	maindiv.innerHTML = "";
-	maindiv.style = "display:flex";
+	maindiv.innerHTML += "\n<div id = 'biglist'></div>"
+	maindiv.innerHTML += "\n<div id = 'calendar'></div>";
 }
 
 async function fetchCourses() {
@@ -19,7 +20,6 @@ async function fetchAssignments(id) {
 async function processCourses(courses) {
 	let courseData = [];
 	const maindiv = document.getElementById("main");
-	maindiv.innerHTML += "\n<div id = 'biglist' style = 'display:inline-block'></div>";
 
 	for(course of courses) {
 		if(Date.now() < new Date(course.end_at).getTime()) {
@@ -33,13 +33,11 @@ async function processCourses(courses) {
 
 async function displayAssignments(name,assignments) {
 	const biglist = document.getElementById("biglist");
-	biglist.innerHTML += "\n<div id = '"+name+"'></div>";
+	biglist.innerHTML += "\n<ul id = '"+name+"' class = 'list'></ul>";
 	const list = document.getElementById(name);
 
-	const color = Math.floor(Math.random() * 16777215).toString(16);
-
 	for(assignment of assignments) {
-		list.innerHTML += "\n<div style = 'cursor:grab;background-color:#"+color+";margin:2px'>"+assignment.name+"</div>";
+		list.innerHTML += "\n<li class = 'assignment'>"+assignment.name+"</li>";
 	}
 }
 
@@ -47,10 +45,8 @@ function createCalendar() {
 	let today = new Date();
 	const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-	const maindiv = document.getElementById("main");
-	maindiv.innerHTML += "\n<div id = 'calendar' style = 'display:inline-block'></div>";
 	const calendar = document.getElementById("calendar");
-	calendar.innerHTML += "\n<div>"+monthNames[today.getMonth()]+"</div>\n<div id = 'days'></div>";
+	calendar.innerHTML += "\n<div>"+monthNames[today.getMonth()]+"</div>\n<ol id = 'days'></ol>";
 	const days = document.getElementById("days");
 	let length;
 
@@ -70,15 +66,15 @@ function createCalendar() {
 	for(i = 0; i < length; i++) {
 		console.log(i);
 		if(i == today.getDate()) {
-			days.innerHTML += "<p style = 'display:inline-block;color:red;width:100px;height:100px;outline:2px solid black'>   "+i+"</p>";
+			days.innerHTML += "<li class = 'day', id = 'today'>   "+i+"</li>";
 		} else {
-			days.innerHTML += "<p style = 'display:inline-block;width:100px;height:100px;outline:2px solid black'>   "+i+"</p>";
+			days.innerHTML += "<li class = 'day'>   "+i+"</li>";
 		}
 	}
 
 }
 async function main() {
-	removeOriginals();
+	setup();
 
 	const courses = await fetchCourses();
 	const courseData = await processCourses(courses);
