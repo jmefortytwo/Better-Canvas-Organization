@@ -1,12 +1,25 @@
+ol,li {
+padding:0 !important;
+margin:0 !important;
+}
 .assignment {
 	cursor:grab;
-	background-color:red;
+	background-color:green;
+	color:black;
+	font-size:1vw;
+	outline:1px solid black;
 }
 .day {
 	display:inline-block;
-	width:100px;
-	height:100px;
+	width:12.5vw;
+	height:25vh;
 	outline:2px solid black;
+}
+.dailylist {
+  list-style-type:none;
+  overflow-y:auto;
+	width:12.5vw;
+	height:calc(25vh - 16px);
 }
 .list {
 	list-style-type:none;

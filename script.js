@@ -1,6 +1,6 @@
 function setup() {
 	const maindiv = document.getElementById("main");
-	maindiv.innerHTML = "";
+	maindiv.innerHTML = "<script>let stored;let prev;</script>";
 	maindiv.innerHTML += "\n<div id = 'biglist'></div>"
 	maindiv.innerHTML += "\n<div id = 'calendar'></div>";
 }
@@ -35,9 +35,11 @@ async function displayAssignments(name,assignments) {
 	const biglist = document.getElementById("biglist");
 	biglist.innerHTML += "\n<ul id = '"+name+"' class = 'list'></ul>";
 	const list = document.getElementById(name);
-
+    
+    i = 0;
 	for(assignment of assignments) {
-		list.innerHTML += "\n<li class = 'assignment'>"+assignment.name+"</li>";
+		list.innerHTML += "\n<li class = 'assignment' id = '"+i+"' onclick = 'stored = this.outerHTML;prev=this.id;'>"+assignment.name+"</li>";
+		i++;
 	}
 }
 
@@ -61,18 +63,16 @@ function createCalendar() {
 	} else {
 		length = 30;
 	}
-	console.log(length);
-
 	for(i = 0; i < length; i++) {
-		console.log(i);
 		if(i == today.getDate()) {
-			days.innerHTML += "<li class = 'day', id = 'today'>   "+i+"</li>";
+			days.innerHTML += "<li class = 'day' id = 'today'>   "+i+"<ol id = 'day"+i+"' class = 'dailylist' onclick = 'document.getElementById(prev).outerHTML=``;this.innerHTML += stored'></ol></li>";
 		} else {
-			days.innerHTML += "<li class = 'day'>   "+i+"</li>";
+			days.innerHTML += "<li class = 'day'>    "+i+"<ol id = 'day"+i+"' class = 'dailylist'  onclick = 'document.getElementById(prev).outerHTML=``;this.innerHTML += stored'></ol></li>";
 		}
 	}
 
 }
+
 async function main() {
 	setup();
 
